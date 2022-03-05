@@ -20,7 +20,23 @@ class Sheep(RandomWalker):
         A model step. Move, then eat grass and reproduce.
         """
         self.random_move()
-        # ... to be completed
+        self.energy -= 1
+        grass_agent = \
+            [agent for agent in self.model.grid.get_cell_list_contents([self.pos]) if isinstance(agent, GrassPatch)][0]
+        if grass_agent.fully_grown:
+            self.energy += 1
+            grass_agent.eat()
+
+        if self.energy == 0:
+            self.model.grid.remove_agent(self)
+            self.model.schedule.remove(self)
+
+
+        elif self.random.random() < self.model.sheep_reproduce:
+            self.energy /= 2
+            child = Sheep(self.model.next_id(), self.pos, self.model, self.moore, self.energy)
+            self.model.grid.place_agent(child, self.pos)
+            self.model.schedule.add(child)
 
 
 class Wolf(RandomWalker):
@@ -57,10 +73,12 @@ class GrassPatch(Agent):
         self.countdown = countdown
         self.pos = pos
 
-
     def step(self):
         if not self.fully_grown:
             self.countdown -= 1
             if self.countdown == 0:
                 self.fully_grown = True
 
+    def eat(self):
+        self.fully_grown = False
+        self.countdown = self.model.grass_regrowth_time
