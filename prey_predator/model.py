@@ -8,10 +8,11 @@ Replication of the model found in NetLogo:
     Center for Connected Learning and Computer-Based Modeling,
     Northwestern University, Evanston, IL.
 """
+import random
 
 from mesa import Model
-from mesa.space import MultiGrid
 from mesa.datacollection import DataCollector
+from mesa.space import MultiGrid
 
 from prey_predator.agents import Sheep, Wolf, GrassPatch
 from prey_predator.schedule import RandomActivationByBreed
@@ -42,17 +43,17 @@ class WolfSheep(Model):
     )
 
     def __init__(
-        self,
-        height=20,
-        width=20,
-        initial_sheep=100,
-        initial_wolves=50,
-        sheep_reproduce=0.04,
-        wolf_reproduce=0.05,
-        wolf_gain_from_food=20,
-        grass=False,
-        grass_regrowth_time=30,
-        sheep_gain_from_food=4,
+            self,
+            height=20,
+            width=20,
+            initial_sheep=100,
+            initial_wolves=50,
+            sheep_reproduce=0.04,
+            wolf_reproduce=0.05,
+            wolf_gain_from_food=20,
+            grass=False,
+            grass_regrowth_time=30,
+            sheep_gain_from_food=4,
     ):
         """
         Create a new Wolf-Sheep model with the given parameters.
@@ -90,24 +91,36 @@ class WolfSheep(Model):
             }
         )
 
-        # Create sheep:
-        # ... to be completed
+        for index in range(initial_sheep):
+            sheep = Sheep(index, self._get_random_pos(), self, True, random.choice(range(6)))
+            self.schedule.add(sheep)
+            self.grid.place_agent(sheep, sheep.pos)
 
-        # Create wolves
-        # ... to be completed
+        for index, wolf_n in enumerate(range(initial_sheep), start=initial_sheep):
+            wolf = Wolf(index, self._get_random_pos(), self, True, random.choice(range(6)))
+            self.schedule.add(wolf)
+            self.grid.place_agent(wolf, wolf.pos)
 
-        # Create grass patches
-        # ... to be completed
+        for i in range(height):
+            for index, j in enumerate(range(width), start=initial_sheep + initial_wolves + (i * height)):
+                full_grown = random.choice([True, False])
+                countdown = random.randrange(1, self.grass_regrowth_time) * (not full_grown)
+                grass = GrassPatch(index, (i, j), self, full_grown, countdown)
+                self.schedule.add(grass)
+                self.grid.place_agent(grass, grass.pos)
+
+        self.running = True
+        self.datacollector.collect(self)
+
+    def _get_random_pos(self):
+        return random.randrange(self.width), random.randrange(self.height)
 
     def step(self):
         self.schedule.step()
-
-        # Collect data
         self.datacollector.collect(self)
 
         # ... to be completed
 
     def run_model(self, step_count=200):
-
-        # ... to be completed
-
+        for i in range(step_count):
+            self.step()
