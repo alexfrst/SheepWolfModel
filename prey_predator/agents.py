@@ -55,6 +55,7 @@ class GrassPatch(Agent):
         super().__init__(unique_id, model)
         self.fully_grown = fully_grown
         self.countdown = countdown
+        self.pos = pos
 
 
     def step(self):
@@ -62,7 +63,4 @@ class GrassPatch(Agent):
             self.countdown -= 1
             if self.countdown == 0:
                 self.fully_grown = True
-                self.countdown = self.model.grass_regrowth_time
-
-
 
