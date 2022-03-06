@@ -92,20 +92,20 @@ class WolfSheep(Model):
         )
 
         for index in range(initial_sheep):
-            sheep = Sheep(index, self._get_random_pos(), self, True, random.choice(range(6)))
+            sheep = Sheep(self.next_id(), self._get_random_pos(), self, True, random.choice(range(6)))
             self.schedule.add(sheep)
             self.grid.place_agent(sheep, sheep.pos)
 
-        for index, wolf_n in enumerate(range(initial_sheep), start=initial_sheep):
-            wolf = Wolf(index, self._get_random_pos(), self, True, random.choice(range(6)))
+        for index in range(initial_sheep):
+            wolf = Wolf(self.next_id(), self._get_random_pos(), self, True, random.choice(range(6)))
             self.schedule.add(wolf)
             self.grid.place_agent(wolf, wolf.pos)
 
         for i in range(height):
-            for index, j in enumerate(range(width), start=initial_sheep + initial_wolves + (i * height)):
+            for j in range(width):
                 full_grown = random.choice([True, False])
                 countdown = random.randrange(1, self.grass_regrowth_time) * (not full_grown)
-                grass = GrassPatch(index, (i, j), self, full_grown, countdown)
+                grass = GrassPatch(self.next_id(), (i, j), self, full_grown, countdown)
                 self.schedule.add(grass)
                 self.grid.place_agent(grass, grass.pos)
 
