@@ -1,3 +1,4 @@
+from random import choice
 from mesa import Agent
 from prey_predator.random_walk import RandomWalker
 
@@ -28,6 +29,7 @@ class Sheep(RandomWalker):
             grass_agent.eat()
 
         if self.energy == 0:
+            print(f"Sheep {self.unique_id} has died of hunger.")
             self.model.grid.remove_agent(self)
             self.model.schedule.remove(self)
 
@@ -37,6 +39,11 @@ class Sheep(RandomWalker):
             child = Sheep(self.model.next_id(), self.pos, self.model, self.moore, self.energy)
             self.model.grid.place_agent(child, self.pos)
             self.model.schedule.add(child)
+
+    def kill(self):
+        print(f'Sheep {self.unique_id} has died from wolf.')
+        self.model.grid.remove_agent(self)
+        self.model.schedule.remove(self)
 
 
 class Wolf(RandomWalker):
@@ -52,7 +59,25 @@ class Wolf(RandomWalker):
 
     def step(self):
         self.random_move()
-        # ... to be completed
+        sheeps = \
+            [agent for agent in self.model.grid.get_cell_list_contents([self.pos]) if isinstance(agent, Sheep)]
+
+        self.energy -= 1
+
+        if len(sheeps):
+            choice(sheeps).kill()
+            self.energy += self.model.wolf_gain_from_food
+
+        if self.energy == 0:
+            self.model.grid.remove_agent(self)
+            self.model.schedule.remove(self)
+
+
+        elif self.random.random() < self.model.wolf_reproduce:
+            self.energy /= 2
+            child = Wolf(self.model.next_id(), self.pos, self.model, self.moore, self.energy)
+            self.model.grid.place_agent(child, self.pos)
+            self.model.schedule.add(child)
 
 
 class GrassPatch(Agent):
