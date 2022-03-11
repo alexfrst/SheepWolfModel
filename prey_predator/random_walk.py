@@ -63,8 +63,6 @@ class RandomWalker(Agent):
                 elif isinstance(agent, grass):
                     if agent.fully_grown:
                         score+=15
-                else:
-                    score+=5
             next_moves_score[move] = score
  
         max_scores = [key for key, value in next_moves_score.items() if value == max(list(next_moves_score.values()))]
