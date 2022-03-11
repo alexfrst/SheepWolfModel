@@ -2,17 +2,9 @@
 
 ## Summary
 
-A simple ecological model, consisting of three agent types: wolves, sheep, and grass. The wolves and the sheep wander around the grid at random. Wolves and sheep both expend energy moving around, and replenish it by eating. Sheep eat grass, and wolves eat sheep if they end up on the same grid cell.
-
-If wolves and sheep have enough energy, they reproduce, creating a new wolf or sheep (in this simplified model, only one parent is needed for reproduction). The grass on each cell regrows at a constant rate. If any wolves and sheep run out of energy, they die.
-
-The model is tests and demonstrates several Mesa concepts and features:
- - MultiGrid
- - Multiple agent types (wolves, sheep, grass)
- - Overlay arbitrary text (wolf's energy) on agent's shapes while drawing on CanvasGrid
- - Agents inheriting a behavior (random movement) from an abstract parent
- - Writing a model composed of multiple files.
- - Dynamically adding and removing agents from the schedule
+This repo contains the prey and predator model of:
+- Alexandre FORESTIER
+- Morgane SENEJKO
 
 ## Installation
 
@@ -41,11 +33,45 @@ Then open your browser to [http://127.0.0.1:8521/](http://127.0.0.1:8521/) and p
 * ``prey_predator/server.py``: Sets up the interactive visualization server
 * ``run.py``: Launches a model visualization server.
 
-## Further Reading
+## Introduced modifications
 
-This model is closely based on the NetLogo Wolf-Sheep Predation Model:
+We've followed the given model. We've only added a `kill` method for wolves and sheeps agent.
 
-Wilensky, U. (1997). NetLogo Wolf Sheep Predation model. http://ccl.northwestern.edu/netlogo/models/WolfSheepPredation. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
+We've made some assumptions for our model:
+- Concerning reproduction, we've decided that it was an energy intensive process for agents. 
+Hence we've decided to divide their energy by two while they were giving birth.
 
-See also the [Lotka–Volterra equations
-](https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations) for an example of a classic differential-equation model with similar dynamics.
+We've also brought some innovations:
+- Concerning sheep moves they are now looking for fresh grass, avoiding places that are containing wolves, looking for other sheep to live with.
+- Concerning wolves, they are seeking for places where there is the biggest number of sheeps and they try to avoid each other.
+- We've also added cosmetic upgrades with a color range depending on the grass growth state, and some pictures for wolves and sheeps.
+
+## Parameter tuning 
+
+In order to have an acceptable curve where the dominant species varies overtime we have implemented sliders in order ot make the testing easier.
+Then we've run iteratively the simulation with the default parameters and finetuned params. When species were gaining way too much influence we reduced some of their values:
+- Their reproduction rate
+- Their energy gain from food
+
+For sheep we've had an additional parameter the grass regrowth time.
+
+After tuning here is obtained graph:
+
+# //TODO Graph to be placed here
+
+## Upgrade that can be done to our model
+
+We could go further in the implementation of the model in order to make it more realistic. Here is a list of ideas we've had:
+
+- `Seasons`: we could have added seasons with several parameters:
+  - During the first 163 steps (winter) animals could lose 2 times more energy
+  - During last 163 (summer) grass could grow 2 times faster
+
+- `Reproduction`: Make reproduction possible only when two agent from same breed are in the same place
+
+- 3rd idea to be placed here
+
+- 4th idea to be placed here
+
+
+Those ideas are pretty easy to implement. However those could have added way more complexity and made the tuning phase way more challenging
