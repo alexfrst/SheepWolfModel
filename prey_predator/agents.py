@@ -20,7 +20,8 @@ class Sheep(RandomWalker):
         """
         A model step. Move, then eat grass and reproduce.
         """
-        self.random_move()
+
+        self.move_sheep(Wolf, GrassPatch)
         self.energy -= 1
         grass_agent = \
             [agent for agent in self.model.grid.get_cell_list_contents([self.pos]) if isinstance(agent, GrassPatch)][0]
@@ -58,7 +59,7 @@ class Wolf(RandomWalker):
         self.energy = energy
 
     def step(self):
-        self.random_move()
+        self.move_wolf(Sheep, GrassPatch)
         sheeps = \
             [agent for agent in self.model.grid.get_cell_list_contents([self.pos]) if isinstance(agent, Sheep)]
 

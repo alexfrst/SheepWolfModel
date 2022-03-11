@@ -36,7 +36,71 @@ class RandomWalker(Agent):
         Step one cell in any allowable direction.
         """
         # Pick the next cell from the adjacent cells.
-        next_moves = self.model.grid.get_neighborhood(self.pos, self.moore, True)
+        next_moves = self.model.grid.get_neighborhood(self.pos, self.moore, True)            
         next_move = self.random.choice(next_moves)
+        # Now move:
+        self.model.grid.move_agent(self, next_move)
+
+    def move_sheep(self, wolf, grass):
+        """
+        The sheep moves where there is no wolf
+        """
+        # Pick the next cell from the adjacent cells.
+        next_moves = self.model.grid.get_neighborhood(self.pos, self.moore, True)
+
+        #Save the information on the moves in a dictionnary
+        next_moves_score = {}
+
+        #For each possible move, check who are the neighbors
+        for move in next_moves:
+            score = 0
+            #check the agents in the potential future position of the sheep
+            agents = [agent for agent in self.model.grid.get_cell_list_contents([move])]
+            #Update score of the move depending on the presence of wolves, grass and sheeps
+            for agent in agents:
+                if isinstance(agent, wolf):
+                    score-=15
+                elif isinstance(agent, grass):
+                    score+=5
+                else:
+                    score+=1
+            next_moves_score[move] = score
+ 
+        print("Scores = ", next_moves_score)
+        max_scores = [key for key, value in next_moves_score.items() if value == max(list(next_moves_score.values()))]
+        next_move = self.random.choice(max_scores)
+        print("next_move sheep = ", next_move)
+        # Now move:
+        self.model.grid.move_agent(self, next_move)
+
+    def move_wolf(self, sheep, grass):
+        """
+        The wolf moves where there is sheeps.
+        """
+        # Pick the next cell from the adjacent cells.
+        next_moves = self.model.grid.get_neighborhood(self.pos, self.moore, True)
+
+        #Save the information on the moves in a dictionnary
+        next_moves_score = {}
+
+        #For each possible move, check who are the neighbors
+        for move in next_moves:
+            score = 0
+            #check the agents in the potential future position of the sheep
+            agents = [agent for agent in self.model.grid.get_cell_list_contents([move])]
+            #Update score of the move depending on the presence of wolves, grass and sheeps
+            for agent in agents:
+                if isinstance(agent, sheep):
+                    score+=15
+                elif isinstance(agent, grass):
+                    score+=1
+                else:
+                    score-=5
+            next_moves_score[move] = score
+ 
+        print("Scores = ", next_moves_score)
+        max_scores = [key for key, value in next_moves_score.items() if value == max(list(next_moves_score.values()))]
+        next_move = self.random.choice(max_scores)
+        print("next_move wolf= ", next_move)
         # Now move:
         self.model.grid.move_agent(self, next_move)
