@@ -12,7 +12,7 @@ def wolf_sheep_portrayal(agent):
 
     portrayal = {}
     if type(agent) is Sheep:
-        portrayal.update({"Shape": "rect",
+        portrayal.update({"Shape": "./prey_predator/images/sheep.png",
                           "Filled": "true",
                           "w": 0.6,
                           "h": 0.6,
@@ -20,7 +20,7 @@ def wolf_sheep_portrayal(agent):
                           "Color": "#0000AA"})
 
     elif type(agent) is Wolf:
-        portrayal.update({"Shape": "circle",
+        portrayal.update({"Shape": "./prey_predator/images/wolf.png",
                           "Filled": "true",
                           "Layer": 2,
                           "r": 0.5,
