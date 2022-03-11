@@ -57,6 +57,16 @@ For sheep we've had an additional parameter the grass regrowth time.
 
 After tuning here is obtained graph:
 
+We've obtained this graph thanks to those parameters:
+- Grass regrowth time:
+- Sheep gain from food:
+- Wolf gain from food:
+- Initial sheep population:
+- Initial wolf population:
+- Sheep reproduction rate:
+- World reproduction rate:
+
+
 # //TODO Graph to be placed here
 
 ## Upgrade that can be done to our model
