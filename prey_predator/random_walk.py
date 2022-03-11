@@ -59,17 +59,16 @@ class RandomWalker(Agent):
             #Update score of the move depending on the presence of wolves, grass and sheeps
             for agent in agents:
                 if isinstance(agent, wolf):
-                    score-=15
+                    score-=20
                 elif isinstance(agent, grass):
-                    score+=5
+                    if agent.fully_grown:
+                        score+=15
                 else:
-                    score+=1
+                    score+=5
             next_moves_score[move] = score
  
-        print("Scores = ", next_moves_score)
         max_scores = [key for key, value in next_moves_score.items() if value == max(list(next_moves_score.values()))]
         next_move = self.random.choice(max_scores)
-        print("next_move sheep = ", next_move)
         # Now move:
         self.model.grid.move_agent(self, next_move)
 
@@ -98,9 +97,7 @@ class RandomWalker(Agent):
                     score-=5
             next_moves_score[move] = score
  
-        print("Scores = ", next_moves_score)
         max_scores = [key for key, value in next_moves_score.items() if value == max(list(next_moves_score.values()))]
         next_move = self.random.choice(max_scores)
-        print("next_move wolf= ", next_move)
         # Now move:
         self.model.grid.move_agent(self, next_move)
