@@ -68,7 +68,7 @@ class Wolf(RandomWalker):
             choice(sheeps).kill()
             self.energy += self.model.wolf_gain_from_food
 
-        if self.energy == 0:
+        if self.energy <= 0:
             self.model.grid.remove_agent(self)
             self.model.schedule.remove(self)
 
