@@ -104,7 +104,7 @@ class GrassPatch(Agent):
     def step(self):
         if not self.fully_grown:
             self.countdown -= 1
-            if self.countdown == 0:
+            if self.countdown <= 0:
                 self.fully_grown = True
 
     def eat(self):
