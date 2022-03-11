@@ -96,7 +96,7 @@ class WolfSheep(Model):
             self.schedule.add(sheep)
             self.grid.place_agent(sheep, sheep.pos)
 
-        for index in range(initial_sheep):
+        for index in range(initial_wolves):
             wolf = Wolf(self.next_id(), self._get_random_pos(), self, True, random.choice(range(6)))
             self.schedule.add(wolf)
             self.grid.place_agent(wolf, wolf.pos)
