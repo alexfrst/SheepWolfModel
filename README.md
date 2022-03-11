@@ -62,16 +62,15 @@ For sheep we've had an additional parameter the grass regrowth time.
 After tuning, here is the obtained graph:
 
 We've obtained this graph thanks to those parameters:
-- Grass regrowth time:
-- Sheep gain from food:
-- Wolf gain from food:
-- Initial sheep population:
-- Initial wolf population:
-- Sheep reproduction rate:
-- World reproduction rate:
+- Grass regrowth time:  49
+- Sheep gain from food: 4
+- Wolf gain from food: 5
+- Initial sheep population: 34
+- Initial wolf population: 13
+- Sheep reproduction rate: 0.07
+- Wolf reproduction rate: 0.05
 
-
-# //TODO Graph to be placed here
+![](prey_predator/images/agent_counts_overtime.png)
 
 ## Upgrade that can be done to our model
 
